@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetBook - Rede Social para Pets</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Variáveis e reset */
+    :root {
+      --primary-color: #A9745B;
+      --secondary-color: #E38B29;
+      --accent-color: #ff9008;
+      --light-bg: #FFD8A8;
+      --dark-text: #333;
+      --light-text: #fff;
+      --shadow: 0px 12px 30px rgba(0,0,0,0.25);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: var(--dark-text);
+    }
+    
+    /* Header */
+    header {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      background-color: var(--light-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--primary-color);
+      overflow: hidden;
+    }
+    
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .site-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    nav a {
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 600;
+      transition: color 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    
+    nav a:hover, nav a.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* Main content */
+    main {
+      display: flex;
+      padding: 2rem;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .content {
+      flex: 2;
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .sidebar {
+      flex: 1;
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      align-self: flex-start;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+    
+    h2 {
+      color: var(--secondary-color);
+      margin: 1.5rem 0 1rem;
+      font-size: 1.5rem;
+    }
+    
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    /* Features section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .feature-card {
+      background: var(--light-bg);
+      padding: 1.5rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: rgba(0, 0, 0, 0.8);
+      color: var(--light-text);
+      padding: 2rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      text-align: left;
+    }
+    
+    .footer-section h3 {
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section a {
+      color: var(--light-text);
+      text-decoration: none;
+      transition: color 0.3s;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-section a:hover {
+      color: var(--accent-color);
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      color: white;
+      font-size: 1.2rem;
+      transition: background 0.3s;
+    }
+    
+    .social-icons a:hover {
+      background: var(--accent-color);
+    }
+    
+    .copyright {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Form styles (from original code) */
+    .container {
+      background-color: var(--light-bg);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      margin: 2rem auto;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    .form-container {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Custom scrollbar */
+    .form-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .form-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .form-container::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 10px;
+    }
+
+    .input-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 2px solid var(--primary-color);
+      border-radius: 12px;
+      outline: none;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(255, 144, 8, 0.2);
+    }
+
+    .input-group .error {
+      color: #e74c3c;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    .input-group.error input, .input-group.error select {
+      border-color: #e74c3c;
+    }
+
+    .input-group.error .error {
+      display: block;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--primary-color);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--accent-color);
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .login-link {
+      margin-top: 1.5rem;
+      color: var(--primary-color);
+      font-size: 0.95rem;
+    }
+
+    .login-link a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .login-link a:hover {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+      }
+      
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+      
+      nav ul {
+        margin-top: 1rem;
+        justify-content: center;
+      }
+      
+      .features {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .social-icons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="logo-container">
+      <div class="logo">
+        <img src="https://i.ibb.co/d0zd5bC3/IMG-20250812-WA0011.webp" alt="Logo PetBook">
+      </div>
+      <div class="site-title">PetBook</div>
+    </div>
+    
+    <nav>
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Sobre</a></li>
+        <li><a href="#">Serviços</a></li>
+        <li><a href="#">Comunidade</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- Conteúdo Principal -->
+  <main>
+    <section class="content">
+      <h1>Bem-vindo ao PetBook</h1>
+      <p>A rede social perfeita para quem ama animais! Conecte-se com outros tutores, encontre cuidadores profissionais e descubra as melhores lojas para o seu pet.</p>
+      
+      <h2>Como Funciona</h2>
+      <p>O PetBook é uma plataforma completa para donos de animais. Aqui você pode:</p>
+      
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-paw"></i>
+          </div>
+          <h3>Perfil do Pet</h3>
+          <p>Crie um perfil completo para seu animal de estimação com fotos, informações de saúde e personalidade.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Comunidade</h3>
+          <p>Conecte-se com outros tutores, compartilhe experiências e marque encontros para os pets.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-store"></i>
+          </div>
+          <h3>Lojas</h3>
+          <p>Encontre produtos e serviços especializados para seu pet com avaliações da comunidade.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-hand-holding-heart"></i>
+          </div>
+          <h3>Cuidadores</h3>
+          <p>Encontre profissionais qualificados para cuidar do seu pet quando você precisar.</p>
+        </div>
+      </div>
+      
+      <h2>Cadastre-se Agora</h2>
+      <p>Junte-se à nossa comunidade de amantes de animais. Crie sua conta gratuitamente e comece a explorar todas as funcionalidades do PetBook!</p>
+    </section>
+    
+    <aside class="sidebar">
+      <!-- Formulário de Cadastro (código original) -->
+      <div class="container">
+        <div class="logo">
+          <img src="https://i.ibb.co/d0zd5bC3/IMG-20250812-WA0011.webp" alt="Logo PetBook">
+        </div>
+        <h1>Criar Conta</h1>
+        
+        <div class="form-container">
+          <form id="cadastroForm">
+            <div class="input-group">
+              <label for="nome">Nome Completo</label>
+              <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+              <div class="error">Por favor, insira seu nome completo</div>
+            </div>
+            
+            <div class="input-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+              <div class="error">Por favor, insira um e-mail válido</div>
+            </div>
+            
+            <div class="input-group">
+              <label for="telefone">Telefone</label>
+              <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999">
+            </div>
+            
+            <div class="input-group">
+              <label for="tipo-usuario">Tipo de Usuário</label>
+              <select id="tipo-usuario" name="tipo-usuario" required>
+                <option value="" disabled selected>Selecione uma opção</option>
+                <option value="tutor">Tutor de Pet</option>
+                <option value="cuidador">Cuidador Profissional</option>
+                <option value="lojista">Lojista/Fornecedor</option>
+              </select>
+              <div class="error">Por favor, selecione um tipo de usuário</div>
+            </div>
+            
+            <div class="input-group">
+              <label for="senha">Senha</label>
+              <div class="password-container">
+                <input type="password" id="senha" name="senha" placeholder="Crie uma senha segura" required minlength="6">
+                <span class="toggle-password" id="toggleSenha">
+                  <i class="far fa-eye"></i>
+                </span>
+              </div>
+              <div class="error">A senha deve ter pelo menos 6 caracteres</div>
+            </div>
+            
+            <div class="input-group">
+              <label for="confirmar-senha">Confirmar Senha</label>
+              <div class="password-container">
+                <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="Digite novamente sua senha" required>
+                <span class="toggle-password" id="toggleConfirmarSenha">
+                  <i class="far fa-eye"></i>
+                </span>
+              </div>
+              <div class="error">As senhas não coincidem</div>
+            </div>
+            
+            <button type="submit" class="btn">Criar Conta</button>
+          </form>
+        </div>
+        
+        <div class="login-link">
+          Já tem uma conta? <a href="#">Faça login</a>
+        </div>
+      </div>
+    </aside>
+  </main>
+  
+  <!-- Rodapé -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Sobre o PetBook</h3>
+        <p>A rede social dedicada exclusivamente aos animais de estimação e seus tutores.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Links Rápidos</h3>
+        <ul>
+          <li><a href="#">Página Inicial</a></li>
+          <li><a href="#">Sobre Nós</a></li>
+          <li><a href="#">Serviços</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Política de Privacidade</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Contato</h3>
+        <p>Email: contato@petbook.com</p>
+        <p>Telefone: (11) 3456-7890</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2023 PetBook - Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('cadastroForm');
+      const toggleSenha = document.getElementById('toggleSenha');
+      const toggleConfirmarSenha = document.getElementById('toggleConfirmarSenha');
+      const senhaInput = document.getElementById('senha');
+      const confirmarSenhaInput = document.getElementById('confirmar-senha');
+      
+      // Função para alternar a visibilidade da senha
+      function togglePasswordVisibility(input, toggleButton) {
+        if (input.type === 'password') {
+          input.type = 'text';
+          toggleButton.innerHTML = '<i class="far fa-eye-slash"></i>';
+        } else {
+          input.type = 'password';
+          toggleButton.innerHTML = '<i class="far fa-eye"></i>';
+        }
+      }
+      
+      // Event listeners para os botões de visualização de senha
+      toggleSenha.addEventListener('click', function() {
+        togglePasswordVisibility(senhaInput, toggleSenha);
+      });
+      
+      toggleConfirmarSenha.addEventListener('click', function() {
+        togglePasswordVisibility(confirmarSenhaInput, toggleConfirmarSenha);
+      });
+      
+      // Validação do formulário
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+        
+        // Validar nome
+        const nomeInput = document.getElementById('nome');
+        if (!nomeInput.value.trim()) {
+          showError(nomeInput.parentElement, 'Por favor, insira seu nome completo');
+          isValid = false;
+        } else {
+          clearError(nomeInput.parentElement);
+        }
+        
+        // Validar email
+        const emailInput = document.getElementById('email');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+          showError(emailInput.parentElement, 'Por favor, insira um e-mail válido');
+          isValid = false;
+        } else {
+          clearError(emailInput.parentElement);
+        }
+        
+        // Validar tipo de usuário
+        const tipoUsuarioInput = document.getElementById('tipo-usuario');
+        if (!tipoUsuarioInput.value) {
+          showError(tipoUsuarioInput.parentElement, 'Por favor, selecione um tipo de usuário');
+          isValid = false;
+        } else {
+          clearError(tipoUsuarioInput.parentElement);
+        }
+        
+        // Validar senha
+        if (senhaInput.value.length < 6) {
+          showError(senhaInput.parentElement.parentElement, 'A senha deve ter pelo menos 6 caracteres');
+          isValid = false;
+        } else {
+          clearError(senhaInput.parentElement.parentElement);
+        }
+        
+        // Validar confirmação de senha
+        if (senhaInput.value !== confirmarSenhaInput.value) {
+          showError(confirmarSenhaInput.parentElement.parentElement, 'As senhas não coincidem');
+          isValid = false;
+        } else {
+          clearError(confirmarSenhaInput.parentElement.parentElement);
+        }
+        
+        // Se o formulário for válido, pode ser submetido
+        if (isValid) {
+          alert('Cadastro realizado com sucesso! Em breve você receberá um e-mail de confirmação.');
+          form.reset();
+        }
+      });
+      
+      function showError(inputGroup, message) {
+        inputGroup.classList.add('error');
+        const errorElement = inputGroup.querySelector('.error');
+        errorElement.textContent = message;
+      }
+      
+      function clearError(inputGroup) {
+        inputGroup.classList.remove('error');
+      }
+      
+      // Máscara para telefone
+      const telefoneInput = document.getElementById('telefone');
+      telefoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+        
+        if (value.length > 0) {
+          value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+          if (value.length > 10) {
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+          } else {
+            value = value.replace(/(\d{4})(\d)/, '$1-$2');
+          }
+        }
+        
+        e.target.value = value;
+      });
+    });
+  </script>
+</body>
+</html>
