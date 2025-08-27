@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil - PetBook</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #FFD8A8;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #A9745B;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar-left h1 {
+      font-size: 1.5rem;
+      color: #FFD8A8;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .search-bar input {
+      padding: 0.4rem 0.6rem;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      width: 200px;
+    }
+
+    .nav-icons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-icons a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .nav-icons a:hover {
+      color: #ff9008;
+    }
+
+    /* Layout */
+    .main {
+      display: grid;
+      grid-template-columns: 250px 1fr 300px;
+      margin-top: 80px;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    /* Sidebar esquerda */
+    .sidebar {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      height: fit-content;
+    }
+
+    .user-profile {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .user-profile img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+      object-fit: cover;
+      border: 3px solid #FFD8A8;
+    }
+
+    .user-profile h3 {
+      color: #A9745B;
+      margin-bottom: 0.3rem;
+    }
+
+    .user-profile p {
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .stat-item {
+      cursor: pointer;
+    }
+
+    .stat-item:hover h4 {
+      color: #ff9008;
+    }
+
+    .stat-item h4 {
+      color: #A9745B;
+      font-size: 1.2rem;
+    }
+
+    .stat-item span {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 0.8rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .sidebar ul li:hover {
+      background-color: #FFD8A8;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar ul li a:hover {
+      color: #ff9008;
+    }
+
+    /* Conteúdo principal do perfil */
+    .profile-content {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    /* Capa do perfil */
+    .cover-photo {
+      height: 200px;
+      background-color: #A9745B;
+      position: relative;
+      background: linear-gradient(to right, #A9745B, #FFD8A8);
+    }
+
+    .profile-info {
+      padding: 1.5rem;
+      position: relative;
+      margin-top: -50px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid white;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .profile-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .profile-btn {
+      padding: 0.6rem 1rem;
+      border-radius: 20px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #ff9008;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #e58107;
+    }
+
+    .btn-secondary {
+      background-color: #FFD8A8;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background-color: #f8c88f;
+    }
+
+    .profile-details {
+      margin-top: 1.5rem;
+    }
+
+    .profile-details h2 {
+      color: #A9745B;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-details p {
+      line-height: 1.5;
+      color: #555;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Abas do perfil */
+    .profile-tabs {
+      display: flex;
+      border-bottom: 2px solid #FFD8A8;
+      margin: 1rem 0;
+    }
+
+    .tab {
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: #777;
+      transition: 0.3s;
+    }
+
+    .tab.active {
+      color: #A9745B;
+      border-bottom: 3px solid #ff9008;
+    }
+
+    .tab:hover {
+      color: #ff9008;
+    }
+
+    /* Conteúdo das abas */
+    .tab-content {
+      padding: 1.5rem;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Post */
+    .post {
+      background: #FFD8A8;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .post-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .post h3 {
+      color: #A9745B;
+    }
+
+    .post-time {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .post-content {
+      margin: 0.5rem 0;
+    }
+
+    .post img {
+      width: 100%;
+      border-radius: 10px;
+      margin: 0.5rem 0;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 0.5rem;
+    }
+
+    .actions button {
+      background: none;
+      border: none;
+      color: #A9745B;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .actions button:hover {
+      color: #ff9008;
+    }
+
+    /* Sidebar direita */
+    .rightbar {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      height: fit-content;
+    }
+
+    .rightbar h2 {
+      margin-bottom: 1rem;
+      color: #A9745B;
+    }
+
+    .suggestion {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .suggestion:hover {
+      background-color: #FFD8A8;
+    }
+
+    .suggestion-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .suggestion img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .btn-add {
+      background: #ff9008;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .btn-add:hover {
+      background: #A9745B;
+    }
+
+    /* Fotos */
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .photo-item {
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.3s;
+    }
+
+    .photo-item img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .main {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar, .rightbar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <h1>PetBook</h1>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar pets...">
+    </div>
+    <div class="nav-icons">
+      <a href="#">🔔</a>
+      <a href="#">⚙️</a>
+      <a href="#">👤</a>
+    </div>
+  </div>
+
+  <!-- Layout principal -->
+  <div class="main">
+    <!-- Sidebar esquerda -->
+    <div class="sidebar">
+      <div class="user-profile">
+        <img src="https://placekitten.com/200/200" alt="Foto do pet">
+        <h3>Bichano</h3>
+        <p>Gato • 3 anos</p>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-item">
+          <h4>247</h4>
+          <span>Amigos</span>
+        </div>
+        <div class="stat-item">
+          <h4>32</h4>
+          <span>Fotos</span>
+        </div>
+        <div class="stat-item">
+          <h4>89</h4>
+          <span>Posts</span>
+        </div>
+      </div>
+      
+      <ul>
+        <li><a href="#">📝 Meu Perfil</a></li>
+        <li><a href="#">👥 Amigos</a></li>
+        <li><a href="#">🖼️ Fotos</a></li>
+        <li><a href="#">🎥 Vídeos</a></li>
+        <li><a href="#">🔔 Notificações</a></li>
+        <li><a href="#">⚙️ Configurações</a></li>
+      </ul>
+    </div>
+
+    <!-- Conteúdo do perfil -->
+    <div class="profile-content">
+      <!-- Capa do perfil -->
+      <div class="cover-photo"></div>
+      
+      <div class="profile-info">
+        <img src="https://placekitten.com/200/200" alt="Foto do pet" class="profile-pic">
+        
+        <div class="profile-actions">
+          <button class="profile-btn btn-primary">Adicionar foto</button>
+          <button class="profile-btn btn-secondary">Editar perfil</button>
+        </div>
+        
+        <div class="profile-details">
+          <h2>Bichano</h2>
+          <p>Gato siamês muito brincalhão e carinhoso. Adoro sonecas no sol e brincar com bolinhas!</p>
+          
+          <div class="details-grid">
+            <div class="detail-item">
+              <span>📍</span>
+              <span>São Paulo, SP</span>
+            </div>
+            <div class="detail-item">
+              <span>🐾</span>
+              <span>Adotado em: 12/03/2020</span>
+            </div>
+            <div class="detail-item">
+              <span>🎂</span>
+              <span>Nascimento: 15/01/2019</span>
+            </div>
+            <div class="detail-item">
+              <span>❤️</span>
+              <span>Relacionamento: Solteiro</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Abas do perfil -->
+        <div class="profile-tabs">
+          <div class="tab active" data-tab="posts">Posts</div>
+          <div class="tab" data-tab="photos">Fotos</div>
+          <div class="tab" data-tab="friends">Amigos</div>
+          <div class="tab" data-tab="about">Sobre</div>
+        </div>
+        
+        <!-- Conteúdo das abas -->
+        <div class="tab-content">
+          <!-- Posts -->
+          <div class="tab-pane active" id="posts">
+            <!-- Criar Post -->
+            <div class="create-post">
+              <textarea rows="3" placeholder="O que seu pet está pensando hoje?"></textarea>
+              <button class="profile-btn btn-primary">Postar</button>
+            </div>
+
+            <!-- Post 1 -->
+            <div class="post">
+              <div class="post-header">
+                <img src="https://placekitten.com/200/200" alt="Bichano">
+                <div>
+                  <h3>Bichano</h3>
+                  <span class="post-time">Hoje às 14:30</span>
+                </div>
+              </div>
+              <div class="post-content">
+                <p>Hoje brinquei muito com meu novelo de lã favorito! Foi divertido! 😻</p>
+              </div>
+              <div class="actions">
+                <button>👍 Curtir</button>
+                <button>💬 Comentar</button>
+                <button>🔄 Compartilhar</button>
+              </div>
+            </div>
+
+            <!-- Post 2 -->
+            <div class="post">
+              <div class="post-header">
+                <img src="https://placekitten.com/200/200" alt="Bichano">
+                <div>
+                  <h3>Bichano</h3>
+                  <span class="post-time">Ontem às 09:15</span>
+                </div>
+              </div>
+              <div class="post-content">
+                <p>Minha humana me levou no veterinário hoje... Não gostei nada! 😾</p>
+                <img src="https://placekitten.com/500/300" alt="Foto do gato">
+              </div>
+              <div class="actions">
+                <button>👍 Curtir</button>
+                <button>💬 Comentar</button>
+                <button>🔄 Compartilhar</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Fotos -->
+          <div class="tab-pane" id="photos">
+            <div class="photos-grid">
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/300" alt="Foto 1">
+              </div>
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/301" alt="Foto 2">
+              </div>
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/302" alt="Foto 3">
+              </div>
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/303" alt="Foto 4">
+              </div>
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/304" alt="Foto 5">
+              </div>
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/305" alt="Foto 6">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Amigos -->
+          <div class="tab-pane" id="friends">
+            <h2>Amigos de Bichano</h2>
+            <div class="photos-grid">
+              <div class="photo-item">
+                <img src="https://placedog.net/300/300" alt="Amigo 1">
+                <p>Rex</p>
+              </div>
+              <div class="photo-item">
+                <img src="https://placekitten.com/300/305" alt="Amigo 2">
+                <p>Mimi</p>
+              </div>
+              <div class="photo-item">
+                <img src="https://placedog.net/300/301" alt="Amigo 3">
+                <p>Bob</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Sobre -->
+          <div class="tab-pane" id="about">
+            <h2>Sobre Bichano</h2>
+            <div class="details-grid">
+              <div class="detail-item">
+                <span>📌</span>
+                <span><strong>Cidade:</strong> São Paulo, SP</span>
+              </div>
+              <div class="detail-item">
+                <span>🎂</span>
+                <span><strong>Nascimento:</strong> 15/01/2019</span>
+              </div>
+              <div class="detail-item">
+                <span>🐾</span>
+                <span><strong>Adotado em:</strong> 12/03/2020</span>
+              </div>
+              <div class="detail-item">
+                <span>❤️</span>
+                <span><strong>Relacionamento:</strong> Solteiro</span>
+              </div>
+              <div class="detail-item">
+                <span>🐱</span>
+                <span><strong>Raça:</strong> Siamês</span>
+              </div>
+              <div class="detail-item">
+                <span>🎨</span>
+                <span><strong>Cor:</strong> Branco e marrom</span>
+              </div>
+            </div>
+            
+            <h3>Biografia</h3>
+            <p>Olá, eu sou o Bichano! Fui resgatado das ruas quando era apenas um filhote e agora tenho uma família maravilhosa. Adoro brincar, correr pela casa e tirar longas sonecas no sofá. Meu hobby favorito é observar os pássaros pela janela.</p>
+            
+            <h3>Interesses</h3>
+            <p>🥘 Comida (principalmente sachê);<br>
+            🧶 Brincar com novelos de lã;<br>
+            📺 Assistir TV (especialmente documentários sobre natureza);<br>
+            😴 Dormir no sol;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar direita -->
+    <div class="rightbar">
+      <h2>Sugestões de Amigos</h2>
+      <div class="suggestion">
+        <div class="suggestion-info">
+          <img src="https://placedog.net/100/100" alt="Luna">
+          <span>Luna 🐾</span>
+        </div>
+        <button class="btn-add">+ Amigo</button>
+      </div>
+      <div class="suggestion">
+        <div class="suggestion-info">
+          <img src="https://placedog.net/100/101" alt="Thor">
+          <span>Thor 🐶</span>
+        </div>
+        <button class="btn-add">+ Amigo</button>
+      </div>
+      <div class="suggestion">
+        <div class="suggestion-info">
+          <img src="https://placekitten.com/100/102" alt="Mel">
+          <span>Mel 😺</span>
+        </div>
+        <button class="btn-add">+ Amigo</button>
+      </div>
+      
+      <h2>Fotos</h2>
+      <div class="photos-grid">
+        <div class="photo-item">
+          <img src="https://placekitten.com/300/300" alt="Foto 1">
+        </div>
+        <div class="photo-item">
+          <img src="https://placekitten.com/300/301" alt="Foto 2">
+        </div>
+        <div class="photo-item">
+          <img src="https://placekitten.com/300/302" alt="Foto 3">
+        </div>
+        <div class="photo-item">
+          <img src="https://placekitten.com/300/303" alt="Foto 4">
+        </div>
+        <div class="photo-item">
+          <img src="https://placekitten.com/300/304" alt="Foto 5">
+        </div>
+        <div class="photo-item">
+          <img src="https://placekitten.com/300/305" alt="Foto 6">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Funcionalidade das abas
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remover classe active de todas as abas
+        document.querySelectorAll('.tab').forEach(t => {
+          t.classList.remove('active');
+        });
+        
+        // Adicionar classe active à aba clicada
+        tab.classList.add('active');
+        
+        // Esconder todos os conteúdos
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+          pane.classList.remove('active');
+        });
+        
+        // Mostrar o conteúdo correspondente
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+    
+    // Funcionalidade do botão de curtir
+    document.querySelectorAll('.actions button').forEach(button => {
+      button.addEventListener('click', function() {
+        if (this.textContent === '👍 Curtir') {
+          this.textContent = '👍 Curtido';
+          this.style.color = '#ff9008';
+        } else if (this.textContent === '👍 Curtido') {
+          this.textContent = '👍 Curtir';
+          this.style.color = '#A9745B';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
